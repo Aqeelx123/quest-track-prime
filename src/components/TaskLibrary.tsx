@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Check, Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
+import { getCategoryIcon } from '@/utils/categoryIcons';
 
 interface TaskLibraryProps {
   selectedTasks: UserTask[];
@@ -35,19 +36,28 @@ export const TaskLibrary = ({ selectedTasks, onToggleTask, onRemoveTask }: TaskL
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Task Library</h2>
-        <p className="text-muted-foreground">
-          Select tasks and assign custom rarity levels. Selected: {selectedTasks.length}/{PREDEFINED_TASKS.length}
+        <h2 className="text-sm mb-2">TASK LIBRARY</h2>
+        <p className="text-muted-foreground text-[10px]">
+          Selected: {selectedTasks.length}/{PREDEFINED_TASKS.length}
         </p>
       </div>
 
       {Object.entries(categoryGroups).map(([category, tasks]) => (
-        <Card key={category}>
+        <Card key={category} className="pixel-border pixel-shadow">
           <CardHeader>
-            <CardTitle>{category}</CardTitle>
-            <CardDescription>
-              {tasks.filter(t => isTaskSelected(t.id)).length}/{tasks.length} tasks selected
-            </CardDescription>
+            <div className="flex items-center gap-2">
+              <img 
+                src={getCategoryIcon(category)} 
+                alt={category}
+                className="h-8 w-8"
+              />
+              <div>
+                <CardTitle className="text-xs">{category}</CardTitle>
+                <CardDescription className="text-[10px]">
+                  {tasks.filter(t => isTaskSelected(t.id)).length}/{tasks.length} selected
+                </CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             {tasks.map((task) => {
@@ -57,17 +67,17 @@ export const TaskLibrary = ({ selectedTasks, onToggleTask, onRemoveTask }: TaskL
               return (
                 <div
                   key={task.id}
-                  className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/5 transition-colors"
+                  className="flex items-center justify-between p-3 pixel-border hover:bg-accent/5 transition-colors"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-medium">{task.name}</h4>
-                      <Badge variant="outline" className="text-xs">
-                        {task.basePoints} pts
+                      <h4 className="text-[10px]">{task.name}</h4>
+                      <Badge variant="outline" className="text-[8px] px-1 py-0">
+                        {task.basePoints}
                       </Badge>
                       {task.supportsDuration && (
-                        <Badge variant="secondary" className="text-xs">
-                          Duration
+                        <Badge variant="secondary" className="text-[8px] px-1 py-0">
+                          TIME
                         </Badge>
                       )}
                     </div>
@@ -80,31 +90,31 @@ export const TaskLibrary = ({ selectedTasks, onToggleTask, onRemoveTask }: TaskL
                           value={currentRarity}
                           onValueChange={(value) => onToggleTask(task.id, value as Rarity)}
                         >
-                          <SelectTrigger className="w-32">
+                          <SelectTrigger className="w-24 pixel-border text-[10px]">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="common">
+                          <SelectContent className="pixel-border">
+                            <SelectItem value="common" className="text-[10px]">
                               <div className="flex items-center gap-2">
-                                <div className="h-2 w-2 rounded-full bg-[hsl(var(--common))]" />
+                                <div className="h-2 w-2 bg-[hsl(var(--common))]" />
                                 Common
                               </div>
                             </SelectItem>
-                            <SelectItem value="uncommon">
+                            <SelectItem value="uncommon" className="text-[10px]">
                               <div className="flex items-center gap-2">
-                                <div className="h-2 w-2 rounded-full bg-[hsl(var(--uncommon))]" />
+                                <div className="h-2 w-2 bg-[hsl(var(--uncommon))]" />
                                 Uncommon
                               </div>
                             </SelectItem>
-                            <SelectItem value="rare">
+                            <SelectItem value="rare" className="text-[10px]">
                               <div className="flex items-center gap-2">
-                                <div className="h-2 w-2 rounded-full bg-[hsl(var(--rare))]" />
+                                <div className="h-2 w-2 bg-[hsl(var(--rare))]" />
                                 Rare
                               </div>
                             </SelectItem>
-                            <SelectItem value="legendary">
+                            <SelectItem value="legendary" className="text-[10px]">
                               <div className="flex items-center gap-2">
-                                <div className="h-2 w-2 rounded-full bg-[hsl(var(--legendary))]" />
+                                <div className="h-2 w-2 bg-[hsl(var(--legendary))]" />
                                 Legendary
                               </div>
                             </SelectItem>
@@ -114,8 +124,9 @@ export const TaskLibrary = ({ selectedTasks, onToggleTask, onRemoveTask }: TaskL
                           size="icon"
                           variant="ghost"
                           onClick={() => onRemoveTask(task.id)}
+                          className="h-8 w-8 pixel-border"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3 w-3" />
                         </Button>
                       </>
                     )}
@@ -123,8 +134,9 @@ export const TaskLibrary = ({ selectedTasks, onToggleTask, onRemoveTask }: TaskL
                       <Button
                         size="sm"
                         onClick={() => onToggleTask(task.id, task.defaultRarity)}
+                        className="pixel-border text-[10px]"
                       >
-                        <Plus className="h-4 w-4 mr-1" />
+                        <Plus className="h-3 w-3 mr-1" />
                         Add
                       </Button>
                     )}

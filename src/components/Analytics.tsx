@@ -22,16 +22,16 @@ export const Analytics = ({ weeklyData, monthlyData }: AnalyticsProps) => {
     }));
 
   return (
-    <Card>
+    <Card className="pixel-border pixel-shadow">
       <CardHeader>
-        <CardTitle>Analytics</CardTitle>
-        <CardDescription>Track your productivity over time</CardDescription>
+        <CardTitle className="text-sm">ANALYTICS</CardTitle>
+        <CardDescription className="text-[10px]">Productivity over time</CardDescription>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="week">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="week">Last 7 Days</TabsTrigger>
-            <TabsTrigger value="month">Last 30 Days</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 pixel-border">
+            <TabsTrigger value="week" className="text-[10px]">7 Days</TabsTrigger>
+            <TabsTrigger value="month" className="text-[10px]">30 Days</TabsTrigger>
           </TabsList>
           
           <TabsContent value="week" className="space-y-4">

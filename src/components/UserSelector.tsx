@@ -3,7 +3,9 @@ import { UserProfile } from '@/types/productivity';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Plus, User } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { getAvatarByIndex } from '@/utils/avatars';
 
 interface UserSelectorProps {
   profiles: UserProfile[];
@@ -26,25 +28,26 @@ export const UserSelector = ({ profiles, currentUserId, onSelectUser, onCreateUs
 
   if (profiles.length === 0 || isCreating) {
     return (
-      <Card className="w-full max-w-md mx-auto">
+      <Card className="w-full max-w-md mx-auto pixel-border pixel-shadow">
         <CardHeader>
-          <CardTitle>Create Your Profile</CardTitle>
-          <CardDescription>Start tracking your productivity journey</CardDescription>
+          <CardTitle className="text-sm">Create Profile</CardTitle>
+          <CardDescription className="text-xs">Start your journey</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Input
-            placeholder="Enter your name"
+            placeholder="Enter name"
             value={newUserName}
             onChange={(e) => setNewUserName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
             autoFocus
+            className="pixel-border text-xs"
           />
           <div className="flex gap-2">
-            <Button onClick={handleCreate} className="flex-1">
-              Create Profile
+            <Button onClick={handleCreate} className="flex-1 pixel-border text-xs">
+              Create
             </Button>
             {profiles.length > 0 && (
-              <Button variant="outline" onClick={() => setIsCreating(false)}>
+              <Button variant="outline" onClick={() => setIsCreating(false)} className="pixel-border text-xs">
                 Cancel
               </Button>
             )}
@@ -60,20 +63,24 @@ export const UserSelector = ({ profiles, currentUserId, onSelectUser, onCreateUs
         {profiles.map((profile) => (
           <Card
             key={profile.id}
-            className={`cursor-pointer transition-all hover:shadow-md ${
-              currentUserId === profile.id ? 'ring-2 ring-primary' : ''
+            className={`cursor-pointer transition-all pixel-border pixel-shadow hover:translate-y-[-2px] ${
+              currentUserId === profile.id ? 'ring-4 ring-accent' : ''
             }`}
             onClick={() => onSelectUser(profile.id)}
           >
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="h-6 w-6 text-primary" />
-                </div>
+                <Avatar className="h-16 w-16 border-4 border-primary">
+                  <AvatarImage 
+                    src={getAvatarByIndex(profile.avatarIndex)} 
+                    alt={profile.name}
+                  />
+                  <AvatarFallback className="text-xs">{profile.name[0]}</AvatarFallback>
+                </Avatar>
                 <div>
-                  <CardTitle className="text-lg">{profile.name}</CardTitle>
-                  <CardDescription>
-                    {profile.selectedTasks.length} tasks configured
+                  <CardTitle className="text-xs">{profile.name}</CardTitle>
+                  <CardDescription className="text-[10px]">
+                    {profile.selectedTasks.length} tasks
                   </CardDescription>
                 </div>
               </div>
@@ -81,17 +88,17 @@ export const UserSelector = ({ profiles, currentUserId, onSelectUser, onCreateUs
           </Card>
         ))}
         <Card
-          className="cursor-pointer transition-all hover:shadow-md border-dashed"
+          className="cursor-pointer transition-all pixel-border pixel-shadow hover:translate-y-[-2px] border-dashed"
           onClick={() => setIsCreating(true)}
         >
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-                <Plus className="h-6 w-6 text-muted-foreground" />
+              <div className="h-16 w-16 border-4 border-dashed border-muted-foreground flex items-center justify-center">
+                <Plus className="h-8 w-8 text-muted-foreground" />
               </div>
               <div>
-                <CardTitle className="text-lg">Add Profile</CardTitle>
-                <CardDescription>Create a new user</CardDescription>
+                <CardTitle className="text-xs">Add Profile</CardTitle>
+                <CardDescription className="text-[10px]">New user</CardDescription>
               </div>
             </div>
           </CardHeader>

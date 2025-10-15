@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UserProfile, TaskLog, Rarity, calculateTaskPoints } from '@/types/productivity';
+import { UserProfile, TaskLog, calculateTaskPoints } from '@/types/productivity';
 import { PREDEFINED_TASKS } from '@/data/predefinedTasks';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, Circle, Clock } from 'lucide-react';
 import { format } from 'date-fns';
+import { getCategoryIcon } from '@/utils/categoryIcons';
 
 interface DailyTrackerProps {
   user: UserProfile;
@@ -41,25 +42,25 @@ export const DailyTracker = ({ user, todayLogs, currentStreak, onCompleteTask }:
 
   return (
     <div className="space-y-6">
-      <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+      <Card className="bg-primary pixel-border pixel-shadow">
         <CardHeader>
-          <CardTitle className="text-2xl">Today's Tasks</CardTitle>
-          <CardDescription>
-            {format(new Date(), 'EEEE, MMMM d, yyyy')}
+          <CardTitle className="text-sm text-primary-foreground">TODAY</CardTitle>
+          <CardDescription className="text-[10px] text-primary-foreground/80">
+            {format(new Date(), 'MMM d yyyy')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Progress</p>
-              <p className="text-3xl font-bold">
+              <p className="text-[10px] text-primary-foreground/80">Progress</p>
+              <p className="text-xl font-bold text-primary-foreground">
                 {completedCount}/{userTasks.length}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Current Streak</p>
-              <p className="text-3xl font-bold text-[hsl(var(--uncommon))]">
-                {currentStreak} {currentStreak === 1 ? 'day' : 'days'}
+              <p className="text-[10px] text-primary-foreground/80">Streak</p>
+              <p className="text-xl font-bold text-secondary">
+                {currentStreak}D
               </p>
             </div>
           </div>
@@ -85,9 +86,14 @@ export const DailyTracker = ({ user, todayLogs, currentStreak, onCompleteTask }:
           }[task.customRarity];
 
           return (
-            <Card key={task.id} className={completed ? 'bg-success/5 border-success/30' : ''}>
+            <Card key={task.id} className={`pixel-border ${completed ? 'bg-success/5 border-success' : 'pixel-shadow'}`}>
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
+                  <img 
+                    src={getCategoryIcon(task.category)} 
+                    alt={task.category}
+                    className="h-8 w-8 mt-1"
+                  />
                   <button
                     onClick={() => !completed && handleComplete(task.id, task.supportsDuration)}
                     className="mt-1"
@@ -102,30 +108,30 @@ export const DailyTracker = ({ user, todayLogs, currentStreak, onCompleteTask }:
 
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h4 className={`font-medium ${completed ? 'line-through text-muted-foreground' : ''}`}>
+                      <h4 className={`text-[10px] ${completed ? 'line-through text-muted-foreground' : ''}`}>
                         {task.name}
                       </h4>
-                      <Badge variant="outline" className={`text-xs ${rarityColor} border-current`}>
+                      <Badge variant="outline" className={`text-[8px] px-1 py-0 ${rarityColor} border-current`}>
                         {task.customRarity}
                       </Badge>
-                      <Badge variant="secondary" className="text-xs">
-                        {pointsPreview} pts
+                      <Badge variant="secondary" className="text-[8px] px-1 py-0">
+                        {pointsPreview}
                       </Badge>
                     </div>
 
                     {task.supportsDuration && !completed && (
                       <div className="flex items-center gap-2 mt-2">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <Clock className="h-3 w-3 text-muted-foreground" />
                         <Input
                           type="number"
-                          placeholder="Duration (minutes)"
+                          placeholder="min"
                           value={durations[task.id] || ''}
                           onChange={(e) => setDurations(prev => ({ ...prev, [task.id]: e.target.value }))}
-                          className="w-40 h-8"
+                          className="w-24 h-6 pixel-border text-[10px]"
                           min="1"
                         />
-                        <span className="text-xs text-muted-foreground">
-                          +{((durations[task.id] ? parseInt(durations[task.id]) : 0) / 60 * 20).toFixed(0)}% bonus
+                        <span className="text-[8px] text-muted-foreground">
+                          +{((durations[task.id] ? parseInt(durations[task.id]) : 0) / 60 * 20).toFixed(0)}%
                         </span>
                       </div>
                     )}
@@ -135,8 +141,9 @@ export const DailyTracker = ({ user, todayLogs, currentStreak, onCompleteTask }:
                     <Button
                       onClick={() => handleComplete(task.id, task.supportsDuration)}
                       size="sm"
+                      className="pixel-border text-[10px]"
                     >
-                      Complete
+                      Done
                     </Button>
                   )}
                 </div>

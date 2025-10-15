@@ -42,6 +42,7 @@ const Index = () => {
     const newProfile: UserProfile = {
       id: `user_${Date.now()}`,
       name,
+      avatarIndex: Math.floor(Math.random() * 6),
       selectedTasks: [],
       createdAt: new Date().toISOString(),
     };
@@ -140,8 +141,8 @@ const Index = () => {
       <div className="min-h-screen bg-background p-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8 text-center">
-            <h1 className="text-4xl font-bold mb-2">Productivity Tracker</h1>
-            <p className="text-muted-foreground">Gamified task tracking with offline support</p>
+            <h1 className="text-lg mb-4">PRODUCTIVITY<br/>TRACKER</h1>
+            <p className="text-muted-foreground text-[10px]">TRACK YOUR PROGRESS</p>
           </div>
           <UserSelector
             profiles={profiles}
@@ -163,19 +164,20 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="border-b">
+      <div className="border-b-4 border-primary pixel-shadow">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">Productivity Tracker</h1>
-              <p className="text-sm text-muted-foreground">Welcome back, {currentUser.name}</p>
+              <h1 className="text-sm">TRACKER</h1>
+              <p className="text-[10px] text-muted-foreground">Player: {currentUser.name}</p>
             </div>
             <Button
               variant="outline"
               onClick={() => setCurrentUserId(null)}
+              className="pixel-border text-[10px]"
             >
-              <Settings className="h-4 w-4 mr-2" />
-              Switch User
+              <Settings className="h-3 w-3 mr-1" />
+              Switch
             </Button>
           </div>
         </div>
@@ -183,18 +185,18 @@ const Index = () => {
 
       <div className="max-w-7xl mx-auto p-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="today">
-              <CheckSquare className="h-4 w-4 mr-2" />
+          <TabsList className="grid w-full grid-cols-3 mb-6 pixel-border">
+            <TabsTrigger value="today" className="text-[10px]">
+              <CheckSquare className="h-3 w-3 mr-1" />
               Today
             </TabsTrigger>
-            <TabsTrigger value="analytics">
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Analytics
+            <TabsTrigger value="analytics" className="text-[10px]">
+              <BarChart3 className="h-3 w-3 mr-1" />
+              Stats
             </TabsTrigger>
-            <TabsTrigger value="tasks">
-              <Library className="h-4 w-4 mr-2" />
-              Task Library
+            <TabsTrigger value="tasks" className="text-[10px]">
+              <Library className="h-3 w-3 mr-1" />
+              Tasks
             </TabsTrigger>
           </TabsList>
 

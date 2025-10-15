@@ -19,6 +19,7 @@ export interface UserTask {
 export interface UserProfile {
   id: string;
   name: string;
+  avatarIndex: number;
   selectedTasks: UserTask[];
   createdAt: string;
 }
