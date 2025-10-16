@@ -3,7 +3,7 @@ import { UserProfile } from '@/types/productivity';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { getAvatarByIndex } from '@/utils/avatars';
 
@@ -12,9 +12,10 @@ interface UserSelectorProps {
   currentUserId: string | null;
   onSelectUser: (userId: string) => void;
   onCreateUser: (name: string) => void;
+  onDeleteProfile: (userId: string) => void;
 }
 
-export const UserSelector = ({ profiles, currentUserId, onSelectUser, onCreateUser }: UserSelectorProps) => {
+export const UserSelector = ({ profiles, currentUserId, onSelectUser, onCreateUser, onDeleteProfile }: UserSelectorProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const [newUserName, setNewUserName] = useState('');
 
@@ -77,12 +78,23 @@ export const UserSelector = ({ profiles, currentUserId, onSelectUser, onCreateUs
                   />
                   <AvatarFallback className="text-xs">{profile.name[0]}</AvatarFallback>
                 </Avatar>
-                <div>
+                <div className="flex-1">
                   <CardTitle className="text-xs">{profile.name}</CardTitle>
                   <CardDescription className="text-[10px]">
                     {profile.selectedTasks.length} tasks
                   </CardDescription>
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteProfile(profile.id);
+                  }}
+                  className="pixel-border h-8 w-8 p-0"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
               </div>
             </CardHeader>
           </Card>

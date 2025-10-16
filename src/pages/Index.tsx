@@ -25,6 +25,7 @@ const Index = () => {
   const [profiles, setProfiles] = useState<UserProfile[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('today');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     const loadedProfiles = loadProfiles();
@@ -127,6 +128,7 @@ const Index = () => {
     };
 
     addTaskLog(log);
+    setRefreshTrigger(prev => prev + 1);
     
     toast.success(
       `${task.name} completed! +${points} points`,
@@ -134,6 +136,19 @@ const Index = () => {
         description: duration ? `Duration: ${duration}min | Streak: ${streak} days` : `Streak: ${streak} days`,
       }
     );
+  };
+
+  const handleDeleteProfile = (userId: string) => {
+    const updatedProfiles = profiles.filter(p => p.id !== userId);
+    setProfiles(updatedProfiles);
+    saveProfiles(updatedProfiles);
+    
+    if (currentUserId === userId) {
+      setCurrentUserId(null);
+      setCurrentUser('');
+    }
+    
+    toast.success('Profile deleted');
   };
 
   if (!currentUser) {
@@ -149,6 +164,7 @@ const Index = () => {
             currentUserId={currentUserId}
             onSelectUser={handleSelectUser}
             onCreateUser={handleCreateUser}
+            onDeleteProfile={handleDeleteProfile}
           />
         </div>
       </div>
