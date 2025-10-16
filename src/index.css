@@ -149,4 +149,11 @@ All colors MUST be HSL.
       0 4px 0 0 hsl(var(--border)),
       4px 4px 0 0 hsl(var(--border));
   }
+
+  .pixel-shadow-lg {
+    text-shadow: 
+      6px 0 0 hsl(var(--border) / 0.3),
+      0 6px 0 hsl(var(--border) / 0.3),
+      6px 6px 0 hsl(var(--border) / 0.3);
+  }
 }
